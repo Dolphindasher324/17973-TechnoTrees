@@ -75,7 +75,7 @@ public class XDrive extends LinearOpMode {
             shoulderInput=gamepad2.right_stick_y;
 
             //Sets power of the neck and shoulder based on double variables
-            neck.setPower(neckInput);
+            neck.setPower(neckInput); 
             shoulder.setPower(shoulderInput);
 
             //changes the current wrist position based on inputs received from the dpad on gamepad2
