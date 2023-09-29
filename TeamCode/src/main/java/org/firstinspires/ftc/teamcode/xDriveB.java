@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class XDrive extends LinearOpMode {
+public class xDriveB extends LinearOpMode {
 
     private Gyroscope imu;
     private DcMotor northWheel;
@@ -20,10 +19,8 @@ public class XDrive extends LinearOpMode {
     private Servo wrist;
     private Servo leftGrip;
     private Servo rightGrip;
-
     @Override
-    public void RunOpMode(){
-
+    public void runOpMode(){
         imu = hardwareMap.get(Gyroscope.class, "imu");
         northWheel = hardwareMap.get(DcMotor.class, "northWheel");
         southWheel = hardwareMap.get(DcMotor.class, "southWheel");
@@ -43,6 +40,7 @@ public class XDrive extends LinearOpMode {
         //variables for drivetrain
         double forwardPower;
         double strafePower;
+        double turnPower;
 
         //variables for arm
         double neckInput;
@@ -58,24 +56,36 @@ public class XDrive extends LinearOpMode {
         westWheel.setDirection(DcMotor.Direction.FORWARD);
         eastWheel.setDirection(DcMotor.Direction.REVERSE);
 
-        while(opModeIsActive()){
-
-            //Sets variables for driving on gamepad1
+        while (opModeIsActive()){
+//Sets variables for driving on gamepad1
             forwardPower=gamepad1.left_stick_y;
-            strafePower=gamepad1.right_stick_x;
+            strafePower=gamepad1.left_stick_x;
+            turnPower=gamepad1.right_stick_x;
 
             //Sets power of wheels based on double variables
-            northWheel.setPower(strafePower);
-            southWheel.setPower(strafePower);
-            westWheel.setPower(forwardPower);
-            eastWheel.setPower(forwardPower);
+            if(turnPower>0.2){
+                northWheel.setPower(turnPower*-1);
+                southWheel.setPower(turnPower);
+                westWheel.setPower(turnPower*-1);
+                eastWheel.setPower(turnPower);
+            } else if (turnPower<0.2) {
+                northWheel.setPower(turnPower);
+                southWheel.setPower(turnPower*-1);
+                westWheel.setPower(turnPower);
+                eastWheel.setPower(turnPower*-1);
+            }else {
+                northWheel.setPower(strafePower);
+                southWheel.setPower(strafePower);
+                westWheel.setPower(forwardPower);
+                eastWheel.setPower(forwardPower);
+            }
 
             //Sets variables for inputs received from gamepad2
             neckInput=gamepad2.left_stick_x;
             shoulderInput=gamepad2.right_stick_y;
 
             //Sets power of the neck and shoulder based on double variables
-            neck.setPower(neckInput); 
+            neck.setPower(neckInput);
             shoulder.setPower(shoulderInput);
 
             //changes the current wrist position based on inputs received from the dpad on gamepad2
@@ -100,6 +110,6 @@ public class XDrive extends LinearOpMode {
             telemetry.addData("status", "running");
             telemetry.update();
         }
-    }
 
+    }
 }
