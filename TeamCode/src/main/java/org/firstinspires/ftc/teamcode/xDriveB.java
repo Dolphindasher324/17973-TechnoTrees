@@ -63,21 +63,16 @@ public class xDriveB extends LinearOpMode {
             turnPower=gamepad1.right_stick_x;
 
             //Sets power of wheels based on double variables
-            if(turnPower>0.2){
+            if(turnPower>0.2 || turnPower<0.2){
                 northWheel.setPower(turnPower*-1);
                 southWheel.setPower(turnPower);
                 westWheel.setPower(turnPower*-1);
                 eastWheel.setPower(turnPower);
-            } else if (turnPower<0.2) {
-                northWheel.setPower(turnPower);
-                southWheel.setPower(turnPower*-1);
-                westWheel.setPower(turnPower);
-                eastWheel.setPower(turnPower*-1);
             }else {
-                northWheel.setPower(strafePower);
-                southWheel.setPower(strafePower);
-                westWheel.setPower(forwardPower);
-                eastWheel.setPower(forwardPower);
+                northWheel.setPower(forwardPower);
+                southWheel.setPower(forwardPower);
+                westWheel.setPower(strafePower);
+                eastWheel.setPower(strafePower);
             }
 
             //Sets variables for inputs received from gamepad2
