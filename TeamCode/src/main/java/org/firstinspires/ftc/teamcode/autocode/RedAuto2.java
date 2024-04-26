@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.concurrent.TimeUnit;
-
 import org.firstinspires.ftc.teamcode.utils.PlaceLinePixel;
+
+import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "RedAuto2")
 
-public class RedAuto2 extends PlaceLinePixel{
+public class RedAuto2 extends PlaceLinePixel {
 
     @Override
 
@@ -23,7 +23,8 @@ public class RedAuto2 extends PlaceLinePixel{
         armRotate = hardwareMap.get(DcMotor.class, "armRotate");
         armBrace = hardwareMap.get(DcMotor.class, "armBrace");
         armExt = hardwareMap.get(DcMotor.class, "armExt");
-        linearGripper = hardwareMap.get(Servo.class, "linearGripper");
+        servoLeft = hardwareMap.get(Servo.class, "servoLeft");
+        servoRight = hardwareMap.get(Servo.class, "servoRight");
 
         try {
 
@@ -32,18 +33,16 @@ public class RedAuto2 extends PlaceLinePixel{
             waitForStart();
 
             if (opModeIsActive()) {
-                linearGripper.setPosition(.7);
+                Grab();
                 TimeUnit.MILLISECONDS.sleep(250);
 
-                RobotMoveFarward();
-                TimeUnit.MILLISECONDS.sleep(250);
+                RobotMoveFarwardHalf();
 
                 RobotStop();
-                TimeUnit.MILLISECONDS.sleep(250);
 
                 armUp();
 
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(2);
                 telemetryTfod();
                 telemetry.update();
 
@@ -54,21 +53,28 @@ public class RedAuto2 extends PlaceLinePixel{
                 } else if (Location3 == true) {
                     PixelLocation3();
                 } else {
-                    Location2 = true;
-                    PixelLocation2();
+                    TimeUnit.SECONDS.sleep(2);
+                    telemetryTfod();
+                    telemetry.update();
+                    if (Location1 == true) {
+                        PixelLocation1();
+                    } else if (Location2 == true) {
+                        PixelLocation2();
+                    } else if (Location3 == true) {
+                        PixelLocation3();
+                    } else {
+                        Location3 = true;
+                        PixelLocation3();
+                    }
                 }
+
+                Break();
+
+                RobotStop();
+
+                Float();
 
                 TimeUnit.MILLISECONDS.sleep(500);
-
-                RedLocation2();
-
-                if (Location1 == true) {
-                    BoardPixel1();
-                } else if (Location2 == true) {
-                    BoardPixel2();
-                } else if (Location3 == true) {
-                    BoardPixel3();
-                }
             }
         } catch (InterruptedException e) {
             //Nothing
